@@ -1,11 +1,15 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class PlayerControl : MonoBehaviour
 {
 	[Header("Scale Up Settings")]
 	[SerializeField] private float animationDuration = 0.35f;
 	[SerializeField] private AnimationCurve scaleCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+	[Header("Audio Settings")]
+	[SerializeField] private AudioSource audioSource;
 
 	private Coroutine scaleRoutine;
 
@@ -42,5 +46,10 @@ public class PlayerControl : MonoBehaviour
 
 		transform.localScale = finalScale;
 		scaleRoutine = null;
+	}
+
+	public void PlayShootSound()
+	{
+		audioSource.Play();
 	}
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(PlayerControl))]
 public class PlayerShot : MonoBehaviour
 {
 	[Header("Fire Points")]
@@ -13,6 +14,13 @@ public class PlayerShot : MonoBehaviour
 
 	private int shootingSide = 0;
 
+	private PlayerControl playerControl;
+
+	private void Awake()
+	{
+		playerControl = GetComponent<PlayerControl>();
+	}
+
 	void Update()
 	{
 		if (Input.GetButtonDown("Fire1"))
@@ -24,6 +32,7 @@ public class PlayerShot : MonoBehaviour
 	private void Shoot()
 	{
 		AlternateShooting();
+		playerControl.PlayShootSound();
 	}
 
 	private void AlternateShooting()
