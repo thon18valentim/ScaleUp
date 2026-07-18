@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(TurretShot))]
 public class TurretControl : MonoBehaviour
 {
 	public GUID Id;
@@ -11,11 +12,14 @@ public class TurretControl : MonoBehaviour
 	[SerializeField] private int life;
 
 	private GameManager gameManager;
+	private TurretShot turretShot;
 
 	private void Awake()
 	{
 		Id = GUID.Generate();
 		life = totalLife;
+
+		turretShot = GetComponent<TurretShot>();
 	}
 
 	private void Start()
@@ -30,6 +34,8 @@ public class TurretControl : MonoBehaviour
 		{
 			OnTurretDestroyed();
 		}
+
+		turretShot.ActivateDeffenseMode();
 	}
 
 	private void OnTurretDestroyed()

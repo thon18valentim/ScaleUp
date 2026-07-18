@@ -9,6 +9,10 @@ public class PlayerMovement : MonoBehaviour
 	[Header("Rotation")]
 	[SerializeField] private float rotationSpeed = 720f;
 
+	[Header("Movement Settings")]
+	[SerializeField] private Transform planet;
+	[SerializeField] private float mapRadius = 40f;
+
 	private Camera mainCamera;
 	private Rigidbody2D rb;
 	private Vector2 mouseWorldPosition;
@@ -23,6 +27,8 @@ public class PlayerMovement : MonoBehaviour
 	{
 		HandleInWorldMovement();
 		HandleMousePosition();
+
+		ClampPosition();
 	}
 
 	private void FixedUpdate()
@@ -63,5 +69,17 @@ public class PlayerMovement : MonoBehaviour
 			rotationSpeed * Time.fixedDeltaTime);
 
 		rb.MoveRotation(angle);
+	}
+
+	private void ClampPosition()
+	{
+		Vector2 direction = (Vector2)transform.position - (Vector2)planet.position;
+
+		if (direction.magnitude > mapRadius)
+		{
+			direction = direction.normalized * mapRadius;
+
+			transform.position = (Vector2)planet.position + direction;
+		}
 	}
 }
