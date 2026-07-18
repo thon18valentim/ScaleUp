@@ -9,6 +9,7 @@ public class PlayerShot : MonoBehaviour
 	[Header("Bullet Settings")]
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float bulletForce = 20f;
+	[SerializeField] private int totalDamage = 20;
 
 	private int shootingSide = 0;
 
@@ -35,8 +36,9 @@ public class PlayerShot : MonoBehaviour
 		var firePoint = firePoints[shootingSide];
 		var bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
 
-		var bulletRb = bullet.GetComponent<Rigidbody2D>();
-		bulletRb.AddForce(firePoint.up * bulletForce, ForceMode2D.Impulse);
+		var bulletControl = bullet.GetComponent<BulletControl>();
+		bulletControl.OnFireShot(totalDamage);
+		bulletControl.ApplyImpulse(firePoint, bulletForce);
 
 		shootingSide++;
 	}

@@ -4,14 +4,13 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 	[Header("Attributes")]
-	[SerializeField] private float speed;
+	[SerializeField] private float moveSpeed = 5f;
 
 	[Header("Rotation")]
 	[SerializeField] private float rotationSpeed = 720f;
 
-	private Rigidbody2D rb;
 	private Camera mainCamera;
-
+	private Rigidbody2D rb;
 	private Vector2 mouseWorldPosition;
 
 	private void Awake()
@@ -22,29 +21,34 @@ public class PlayerMovement : MonoBehaviour
 
 	private void Update()
 	{
-		mouseWorldPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+		HandleInWorldMovement();
+		HandleMousePosition();
 	}
 
 	private void FixedUpdate()
 	{
-		Move();
-		Rotate();
+		HandleRotation();
 	}
 
-	private void Move()
+	private void HandleInWorldMovement()
 	{
-		float x = Input.GetAxisRaw("Horizontal");
-		float y = Input.GetAxisRaw("Vertical");
+		var x = Input.GetAxisRaw("Horizontal");
+		var y = Input.GetAxisRaw("Vertical");
 
 		Vector2 direction = new Vector2(x, y).normalized;
 
 		Vector2 position = transform.position;
-		position += speed * Time.deltaTime * direction;
+		position += moveSpeed * Time.deltaTime * direction;
 
 		transform.position = position;
 	}
 
-	private void Rotate()
+	private void HandleMousePosition()
+	{
+		mouseWorldPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+	}
+
+	private void HandleRotation()
 	{
 		Vector2 direction = mouseWorldPosition - rb.position;
 
