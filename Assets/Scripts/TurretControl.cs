@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(TurretShot))]
 public class TurretControl : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class TurretControl : MonoBehaviour
 
 	[Header("Status")]
 	[SerializeField] private int life;
+
+	[Header("Audio Settings")]
+	[SerializeField] private AudioSource audioSource;
 
 	private GameManager gameManager;
 	private TurretShot turretShot;
@@ -42,5 +46,10 @@ public class TurretControl : MonoBehaviour
 	{
 		gameManager.DestroyTurret(Id);
 		Destroy(gameObject);
+	}
+
+	public void PlayShootSound()
+	{
+		audioSource.Play();
 	}
 }

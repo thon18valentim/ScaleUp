@@ -21,6 +21,7 @@ public class EnemyShot : MonoBehaviour
 	[SerializeField] private GameObject bulletPrefab;
 	[SerializeField] private float bulletForce = 20f;
 	[SerializeField] private int totalDamage = 20;
+	[SerializeField] private GameObject bulleetFireEffectPrefab;
 
 	private EnemyControl enemyControl;
 	private EnemyTargetSelector enemyTargetSelector;
@@ -68,12 +69,18 @@ public class EnemyShot : MonoBehaviour
 		{
 			AlternateShooting();
 		}
+
+		enemyControl.PlayShootSound();
 	}
 
 	private void FixedShooting()
 	{
 		foreach (var firePoint in firePoints)
 		{
+			var bulletFireEffect = Instantiate(bulleetFireEffectPrefab, firePoint.position, firePoint.rotation);
+			var effect = bulletFireEffect.GetComponent<BulletFireEffect>();
+			effect.DoEffect();
+
 			var bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
 
 			var bulletControl = bullet.GetComponent<BulletControl>();

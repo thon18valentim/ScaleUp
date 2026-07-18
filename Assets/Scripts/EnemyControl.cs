@@ -1,6 +1,8 @@
 using Assets.Scripts;
 using UnityEngine;
+using UnityEngine.Audio;
 
+[RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(EnemyTargetSelector))]
 public class EnemyControl : MonoBehaviour
 {
@@ -14,6 +16,9 @@ public class EnemyControl : MonoBehaviour
 
 	[Header("States")]
 	[SerializeField] private EnemyState currentState;
+
+	[Header("Audio Settings")]
+	[SerializeField] private AudioSource audioSource;
 
 	private GameManager gameManager;
 	private EnemyTargetSelector targetSelector;
@@ -64,5 +69,10 @@ public class EnemyControl : MonoBehaviour
 			currentState = EnemyState.Moving;
 			targetSelector.OnTargetSelection();
 		}
+	}
+
+	public void PlayShootSound()
+	{
+		audioSource.Play();
 	}
 }

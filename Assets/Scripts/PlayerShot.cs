@@ -11,6 +11,7 @@ public class PlayerShot : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float bulletForce = 20f;
 	[SerializeField] private int totalDamage = 20;
+	[SerializeField] private GameObject bulleetFireEffectPrefab;
 
 	private int shootingSide = 0;
 
@@ -43,8 +44,12 @@ public class PlayerShot : MonoBehaviour
 		}
 
 		var firePoint = firePoints[shootingSide];
-		var bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
 
+		var bulletFireEffect = Instantiate(bulleetFireEffectPrefab, firePoint.position, firePoint.rotation);
+		var effect = bulletFireEffect.GetComponent<BulletFireEffect>();
+		effect.DoEffect();
+
+		var bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
 		var bulletControl = bullet.GetComponent<BulletControl>();
 		bulletControl.OnFireShot(totalDamage);
 		bulletControl.ApplyImpulse(firePoint, bulletForce);

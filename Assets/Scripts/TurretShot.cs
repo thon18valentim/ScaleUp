@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(TurretControl))]
 public class TurretShot : MonoBehaviour
 {
 	[Header("Fire Points")]
@@ -16,12 +17,17 @@ public class TurretShot : MonoBehaviour
 	[SerializeField] private GameObject bulletPrefab;
 	[SerializeField] private float bulletForce = 20f;
 	[SerializeField] private int totalDamage = 20;
+	[SerializeField] private GameObject bulleetFireEffectPrefab;
 
 	private bool onDeffenseMode = false;
 	private int deffenseModeCount;
 
+	private TurretControl turretControl;
+
 	private void Awake()
 	{
+		turretControl = GetComponent<TurretControl>();
+
 		currentFireRateCooldown = fireRateCooldown;
 		deffenseModeCount = deffenseModeRate;
 	}
@@ -50,11 +56,17 @@ public class TurretShot : MonoBehaviour
 	{
 		foreach (var firePoint in firePoints)
 		{
+			var bulletFireEffect = Instantiate(bulleetFireEffectPrefab, firePoint.position, firePoint.rotation);
+			var effect = bulletFireEffect.GetComponent<BulletFireEffect>();
+			effect.DoEffect();
+
 			var bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
 
 			var bulletControl = bullet.GetComponent<BulletControl>();
 			bulletControl.OnFireShot(totalDamage);
 			bulletControl.ApplyImpulse(firePoint, bulletForce);
+
+			turretControl.PlayShootSound();
 		}
 	}
 
