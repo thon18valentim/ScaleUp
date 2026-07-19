@@ -6,10 +6,16 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 	[Header("Attributes")]
-	[SerializeField] private float moveSpeed = 5f;
+	[SerializeField] private float acceleration = 8f;
+	[SerializeField] private float maxSpeed = 12f;
+	[SerializeField] private float brakeForce = 12f;
+	[SerializeField] private float drag = 2f;
+
+	private float currentSpeed;
 
 	[Header("Rotation")]
 	[SerializeField] private float rotationSpeed = 720f;
+	[SerializeField] private float turnSpeed = 180f;
 
 	[Header("Movement Settings")]
 	[SerializeField] private Transform planet;
@@ -52,18 +58,41 @@ public class PlayerMovement : MonoBehaviour
 
 	private void HandleInWorldMovement()
 	{
-		var x = Input.GetAxisRaw("Horizontal");
-		var y = Input.GetAxisRaw("Vertical");
+		if (Input.GetKey(KeyCode.W))
+		{
+			currentSpeed += acceleration * Time.deltaTime;
+		}
 
-		Vector2 direction = new Vector2(x, y).normalized;
+		if (Input.GetKey(KeyCode.S))
+		{
+			currentSpeed -= brakeForce * Time.deltaTime;
+		}
 
-		Vector2 position = transform.position;
-		position += moveSpeed * Time.deltaTime * direction;
+		currentSpeed = Mathf.Clamp(currentSpeed, 0f, maxSpeed);
 
-		transform.position = position;
+		if (!Input.GetKey(KeyCode.W))
+		{
+			currentSpeed = Mathf.MoveTowards(
+				currentSpeed,
+				0,
+				drag * Time.deltaTime);
+		}
 
-		DoEngineTrail(direction);
-		DoSpeedTrail(direction);
+		transform.position += currentSpeed * Time.deltaTime * transform.up;
+
+		//var x = Input.GetAxisRaw("Horizontal");
+		//var y = Input.GetAxisRaw("Vertical");
+
+		//Vector2 direction = new Vector2(x, y).normalized;
+
+		//Vector2 position = transform.position;
+		//position += moveSpeed * Time.deltaTime * direction;
+
+		//transform.position = position;
+
+		var speedPercent = currentSpeed / maxSpeed;
+		DoEngineTrail(speedPercent);
+		DoSpeedTrail(speedPercent);
 	}
 
 	private void HandleMousePosition()
@@ -100,10 +129,8 @@ public class PlayerMovement : MonoBehaviour
 		}
 	}
 
-	private void DoEngineTrail(Vector2 direction)
+	private void DoEngineTrail(float speedPercent)
 	{
-		float speedPercent = direction.magnitude;
-
 		Vector3 scale = engineTrail.localScale;
 
 		scale.y = Mathf.Lerp(
@@ -114,10 +141,8 @@ public class PlayerMovement : MonoBehaviour
 		engineTrail.localScale = scale;
 	}
 
-	private void DoSpeedTrail(Vector2 direction)
+	private void DoSpeedTrail(float speedPercent)
 	{
-		float speedPercent = direction.magnitude;
-
 		foreach (var speedTrail in speedTrails)
 		{
 			Vector3 scale = speedTrail.localScale;

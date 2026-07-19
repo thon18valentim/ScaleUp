@@ -1181,7 +1181,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &604358891
 SpriteRenderer:
   serializedVersion: 3
@@ -3265,8 +3265,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fefe0d9a9a35af408f420bbcaaf24a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  moveSpeed: 5
-  rotationSpeed: 720
+  acceleration: 25
+  maxSpeed: 12
+  brakeForce: 12
+  drag: 2
+  rotationSpeed: 500
+  turnSpeed: 180
   planet: {fileID: 2070525215}
   mapRadius: 40
   engineTrail: {fileID: 1122998045}
