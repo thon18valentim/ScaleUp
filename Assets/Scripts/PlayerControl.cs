@@ -4,6 +4,9 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class PlayerControl : MonoBehaviour
 {
+	[Header("Player Settings")]
+	[SerializeField] private int totalLife = 10;
+
 	[Header("Scale Up Settings")]
 	[SerializeField] private float animationDuration = 0.35f;
 	[SerializeField] private AnimationCurve scaleCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
@@ -11,14 +14,27 @@ public class PlayerControl : MonoBehaviour
 	[Header("Audio Settings")]
 	[SerializeField] private AudioSource audioSource;
 
+	private GameManager gameManager;
 	private Coroutine scaleRoutine;
+	private int currentLife = 0;
 
-	public void OnScaleUp(float targetScale)
+	private void Awake()
+	{
+		currentLife = totalLife;
+	}
+
+	private void Start()
+	{
+		gameManager = FindAnyObjectByType<GameManager>();
+	}
+
+	public void OnScaleUp(float targetScale, int maxLife)
     {
 		if (scaleRoutine != null)
 			StopCoroutine(scaleRoutine);
 
 		scaleRoutine = StartCoroutine(ScaleRoutine(targetScale));
+		currentLife = maxLife;
 	}
 
 	private IEnumerator ScaleRoutine(float targetScale)
@@ -51,5 +67,14 @@ public class PlayerControl : MonoBehaviour
 	public void PlayShootSound()
 	{
 		audioSource.Play();
+	}
+
+	public void OnDamageReceived(int damage)
+	{
+		currentLife -= damage;
+		if (currentLife <= 0)
+		{
+			gameManager.GameOver();
+		}
 	}
 }

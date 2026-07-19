@@ -47,6 +47,8 @@ public class EnemyControl : MonoBehaviour
 	private void OnEnemyDestroyed()
 	{
 		gameManager.ScorePoints(points);
+		gameManager.EnemyDestroyed();
+
 		Destroy(gameObject);
 	}
 
@@ -83,5 +85,10 @@ public class EnemyControl : MonoBehaviour
 	public EnemyBehavior GetEnemyBehavior()
 	{
 		return enemyBehavior;
+	}
+
+	public bool IsGameStarted()
+	{
+		return gameManager.IsGameStarted();
 	}
 }

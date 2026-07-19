@@ -10,5 +10,6 @@ namespace Assets.Scripts
 		[SerializeField] public int pointsToLevelUp;
 		[SerializeField] public float targetScale;
 		[SerializeField] public float targetZoom;
+		[SerializeField] public int maxLife;
 	}
 }

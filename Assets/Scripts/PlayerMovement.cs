@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,7 +14,6 @@ public class PlayerMovement : MonoBehaviour
 
 	[Header("Rotation")]
 	[SerializeField] private float rotationSpeed = 720f;
-	[SerializeField] private float turnSpeed = 180f;
 
 	[Header("Movement Settings")]
 	[SerializeField] private Transform planet;
@@ -79,16 +77,6 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 		transform.position += currentSpeed * Time.deltaTime * transform.up;
-
-		//var x = Input.GetAxisRaw("Horizontal");
-		//var y = Input.GetAxisRaw("Vertical");
-
-		//Vector2 direction = new Vector2(x, y).normalized;
-
-		//Vector2 position = transform.position;
-		//position += moveSpeed * Time.deltaTime * direction;
-
-		//transform.position = position;
 
 		var speedPercent = currentSpeed / maxSpeed;
 		DoEngineTrail(speedPercent);

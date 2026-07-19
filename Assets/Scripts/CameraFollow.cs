@@ -26,4 +26,20 @@ public class CameraFollow : MonoBehaviour
 			ref velocity,
 			smoothTime);
 	}
+
+	public void ResetPosition()
+	{
+		Camera.main.orthographicSize = 5f;
+
+		Vector3 targetPosition = new Vector3(
+			target.position.x,
+			target.position.y,
+			transform.position.z);
+
+		transform.position = Vector3.SmoothDamp(
+			transform.position,
+			targetPosition,
+			ref velocity,
+			smoothTime);
+	}
 }

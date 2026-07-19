@@ -37,6 +37,11 @@ public class EnemyMovement : MonoBehaviour
 
 	private void Move()
 	{
+		if (!enemyControl.IsGameStarted())
+		{
+			return;
+		}
+
 		var target = targetSelector.GetTargetTransform();
 		if (target == null)
 			return;

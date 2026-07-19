@@ -6,7 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(CameraScaleEffect))]
 public class GameManager : MonoBehaviour
 {
-    [Header("Match control")]
+	[Header("Match control")]
+	[SerializeField] private PlayerControl playerControl;
     [SerializeField] private int playerCurrentPoints = 0;
 	[SerializeField] private int playerCurrentLevel = 1;
 	[SerializeField] private List<PlayerScaleLevel> scaleLevels;
@@ -14,19 +15,26 @@ public class GameManager : MonoBehaviour
 	[Header("Turrets control")]
 	[SerializeField] private List<TurretControl> turrets;
 
-	private PlayerControl playerControl;
+	[Header("Enemies control")]
+	[SerializeField] private int enemiesToDestroy;
+
+	[Header("Camera")]
+	[SerializeField] private CameraFollow cameraFollow;
+
+	[Header("UI")]
+	[SerializeField] private GameObject mainMenuScreen;
+	[SerializeField] private GameObject gameOverScreen;
+	[SerializeField] private GameObject victoryScreen;
+
 	private CameraScaleEffect cameraScaleEffect;
 	private PlayerScaleLevel currentScaleLevel;
+	private bool isPlaying = true;
+	private bool isGameStarted = false;
 
 	private void Awake()
 	{
 		cameraScaleEffect = GetComponent<CameraScaleEffect>();
 		currentScaleLevel = scaleLevels.FirstOrDefault(sl => sl.level == 1);
-	}
-
-	private void Start()
-	{
-        playerControl = FindAnyObjectByType<PlayerControl>();
 	}
 
 	public void ScorePoints(int points)
@@ -48,7 +56,7 @@ public class GameManager : MonoBehaviour
 		}
 
 		cameraScaleEffect.DoEffect(level.targetZoom);
-		playerControl.OnScaleUp(level.targetScale);
+		playerControl.OnScaleUp(level.targetScale, level.maxLife);
 
 		playerCurrentLevel++;
 		currentScaleLevel = level;
@@ -61,7 +69,13 @@ public class GameManager : MonoBehaviour
 			return null;
 		}
 
-		return turrets[0];
+		var rnd = Random.Range(0, turrets.Count);
+		return turrets[rnd];
+	}
+
+	public bool IsGameStarted()
+	{
+		return isGameStarted;
 	}
 
 	public bool IsTurretAlive(GUID id)
@@ -73,5 +87,43 @@ public class GameManager : MonoBehaviour
 	public void DestroyTurret(GUID id)
 	{
 		turrets.RemoveAll(rm => rm.Id == id);
+		CheckForEndGame();
+	}
+
+	private void CheckForEndGame()
+	{
+		if (turrets.Count == 0 && isPlaying)
+		{
+			// end game
+			Debug.Log("game over");
+			isPlaying = false;
+			gameOverScreen.SetActive(true);
+		}
+	}
+
+	public void GameOver()
+	{
+		isPlaying = false;
+		gameOverScreen.SetActive(true);
+	}
+
+	public void EnemyDestroyed()
+	{
+		enemiesToDestroy--;
+		if (enemiesToDestroy <= 0 && isPlaying)
+		{
+			isPlaying = false;
+			victoryScreen.SetActive(true);
+		}
+	}
+
+	public void LaunchGame()
+	{
+		mainMenuScreen.SetActive(false);
+
+		playerControl.gameObject.SetActive(true);
+		cameraFollow.ResetPosition();
+
+		isGameStarted = true;
 	}
 }
