@@ -35,9 +35,12 @@ public class PlayerMovement : MonoBehaviour
 	private Rigidbody2D rb;
 	private Vector2 mouseWorldPosition;
 
+	private PlayerControl playerControl;
+
 	private void Awake()
 	{
 		rb = GetComponent<Rigidbody2D>();
+		playerControl = GetComponent<PlayerControl>();
 		mainCamera = Camera.main;
 	}
 
@@ -75,6 +78,8 @@ public class PlayerMovement : MonoBehaviour
 				0,
 				drag * Time.deltaTime);
 		}
+
+		playerControl.UpdateSpeedText(currentSpeed);
 
 		transform.position += currentSpeed * Time.deltaTime * transform.up;
 

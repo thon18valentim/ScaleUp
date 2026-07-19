@@ -32,8 +32,10 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI gameVersionTxt;
 	[SerializeField] private List<GameObject> lifeBlocks;
 	[SerializeField] private List<GameObject> energyBlocks;
+	[SerializeField] private List<GameObject> damageBlocks;
 	[SerializeField] private List<GameObject> scaleBlocks;
 	[SerializeField] private TextMeshProUGUI enemiesCountTxt;
+	[SerializeField] private TextMeshProUGUI currentSpeedTxt;
 
 	private CameraScaleEffect cameraScaleEffect;
 	private PlayerScaleLevel currentScaleLevel;
@@ -50,12 +52,13 @@ public class GameManager : MonoBehaviour
 	{
 		gameVersionTxt.text = $"v {Application.version}";
 		enemiesCountTxt.text = enemiesToDestroy.ToString();
+		currentSpeedTxt.text = "0 u";
 	}
 
 	public void ScorePoints(int points)
     {
         playerCurrentPoints += points;
-		UpdateEnergyUI(points);
+		UpdateEnergyUI(playerCurrentPoints);
 
 		if (playerCurrentPoints >= currentScaleLevel.pointsToLevelUp)
         {
@@ -72,7 +75,7 @@ public class GameManager : MonoBehaviour
 		}
 
 		cameraScaleEffect.DoEffect(level.targetZoom);
-		playerControl.OnScaleUp(level.targetScale, level.maxLife);
+		playerControl.OnScaleUp(level.targetScale, level.maxLife, level.damage);
 
 		playerCurrentLevel++;
 		currentScaleLevel = level;
@@ -94,6 +97,11 @@ public class GameManager : MonoBehaviour
 	public bool IsGameStarted()
 	{
 		return isGameStarted;
+	}
+
+	public bool IsGameOver()
+	{
+		return !isPlaying;
 	}
 
 	public bool IsTurretAlive(GUID id)
@@ -213,5 +221,25 @@ public class GameManager : MonoBehaviour
 
 			image.color = i < scale ? new Color32(155, 0, 255, 255) : new Color32(142, 142, 142, 255);
 		}
+	}
+
+	public void UpdateDamageUI(int damage)
+	{
+		damage = Mathf.Clamp(damage, 0, damageBlocks.Count);
+
+		for (int i = 0; i < damageBlocks.Count; i++)
+		{
+			var image = damageBlocks[i].GetComponent<Image>();
+
+			if (image == null)
+				continue;
+
+			image.color = i < damage ? new Color32(255, 0, 0, 255) : new Color32(142, 142, 142, 255);
+		}
+	}
+
+	public void UpdateSpeedText(float speed)
+	{
+		currentSpeedTxt.text = $"{speed.ToString("0.00")} u";
 	}
 }

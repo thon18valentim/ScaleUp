@@ -40,23 +40,26 @@ public class EnemyShot : MonoBehaviour
 	private void Update()
 	{
 		var currentState = enemyControl.GetCurrentState();
-		if (currentState == EnemyState.Attacking)
+		if (!enemyControl.IsGameOver())
 		{
-			currentAttackCooldown -= Time.deltaTime;
-			if (currentAttackCooldown <= 0)
+			if (currentState == EnemyState.Attacking)
 			{
-				currentFireRateCooldown -= Time.deltaTime;
-				if (currentFireRateCooldown <= 0)
+				currentAttackCooldown -= Time.deltaTime;
+				if (currentAttackCooldown <= 0)
 				{
-					Shoot();
-
-					var targetId = enemyTargetSelector.GetTargetId();
-					if (targetId != null)
+					currentFireRateCooldown -= Time.deltaTime;
+					if (currentFireRateCooldown <= 0)
 					{
-						enemyControl.CheckIfTargetIsAlive((GUID)targetId);
-					}
+						Shoot();
 
-					currentFireRateCooldown = fireRateCooldown;
+						var targetId = enemyTargetSelector.GetTargetId();
+						if (targetId != null)
+						{
+							enemyControl.CheckIfTargetIsAlive((GUID)targetId);
+						}
+
+						currentFireRateCooldown = fireRateCooldown;
+					}
 				}
 			}
 		}

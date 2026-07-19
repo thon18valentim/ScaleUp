@@ -97,4 +97,9 @@ public class EnemyControl : MonoBehaviour
 	{
 		return gameManager.IsGameStarted();
 	}
+
+	public bool IsGameOver()
+	{
+		return gameManager.IsGameOver();
+	}
 }

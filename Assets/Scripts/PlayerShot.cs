@@ -30,6 +30,11 @@ public class PlayerShot : MonoBehaviour
 		}
 	}
 
+	public void UpgradeTotalDamage(int damage)
+	{
+		totalDamage = damage;
+	}
+
 	private void Shoot()
 	{
 		AlternateShooting();

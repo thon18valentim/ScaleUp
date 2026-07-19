@@ -17,11 +17,13 @@ public class PlayerControl : MonoBehaviour
 
 	private GameManager gameManager;
 	private Coroutine scaleRoutine;
+	private PlayerShot playerShot;
 	private int currentLife = 0;
 
 	private void Awake()
 	{
 		currentLife = totalLife;
+		playerShot = GetComponent<PlayerShot>();
 	}
 
 	private void Start()
@@ -30,7 +32,7 @@ public class PlayerControl : MonoBehaviour
 		gameManager.UpdateHealthUI(currentLife);
 	}
 
-	public void OnScaleUp(float targetScale, int maxLife)
+	public void OnScaleUp(float targetScale, int maxLife, int totalDamage)
     {
 		if (scaleRoutine != null)
 			StopCoroutine(scaleRoutine);
@@ -38,7 +40,10 @@ public class PlayerControl : MonoBehaviour
 		scaleRoutine = StartCoroutine(ScaleRoutine(targetScale));
 		currentLife = maxLife;
 
+		playerShot.UpgradeTotalDamage(totalDamage);
+
 		gameManager.UpdateHealthUI(currentLife);
+		gameManager.UpdateDamageUI(totalDamage);
 	}
 
 	private IEnumerator ScaleRoutine(float targetScale)
@@ -85,5 +90,10 @@ public class PlayerControl : MonoBehaviour
 		}
 
 		gameManager.UpdateHealthUI(currentLife);
+	}
+
+	public void UpdateSpeedText(float speed)
+	{
+		gameManager.UpdateSpeedText(speed);
 	}
 }

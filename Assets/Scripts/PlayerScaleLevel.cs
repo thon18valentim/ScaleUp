@@ -11,5 +11,6 @@ namespace Assets.Scripts
 		[SerializeField] public float targetScale;
 		[SerializeField] public float targetZoom;
 		[SerializeField] public int maxLife;
+		[SerializeField] public int damage;
 	}
 }

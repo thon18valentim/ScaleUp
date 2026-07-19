@@ -209,8 +209,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35a014b37d9face429aa9849672efc33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
-  moveSpeed: 2.5
-  attackRange: 5
+  moveSpeed: 1.5
+  attackRange: 10
   rotationSpeed: 500
 --- !u!82 &4451829421518001513
 AudioSource:
