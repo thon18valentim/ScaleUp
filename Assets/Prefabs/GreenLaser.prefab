@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3368418031283410662}
   - component: {fileID: 4273653286300293384}
   - component: {fileID: 8299116708722317504}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GreenLaser
   m_TagString: Bullet
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0

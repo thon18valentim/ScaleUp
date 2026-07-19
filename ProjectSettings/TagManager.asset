@@ -11,15 +11,15 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Radar
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Player_Bullet
+  - Enemy_Bullet
+  - Enemy
+  - Turret
+  - Turret_Bullet
   - 
   - 
   - 

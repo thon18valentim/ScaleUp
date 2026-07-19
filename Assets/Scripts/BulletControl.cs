@@ -21,7 +21,7 @@ public class BulletControl : MonoBehaviour
 		Destroy(gameObject, autoDestroyTime);
 	}
 
-	private void OnCollisionEnter2D(Collision2D collision)
+	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		if (AvoidColision(collision))
 			return;
@@ -50,7 +50,7 @@ public class BulletControl : MonoBehaviour
 		rb.AddForce(firePoint.up * force, ForceMode2D.Impulse);
 	}
 
-	private bool AvoidColision(Collision2D collision)
+	private bool AvoidColision(Collider2D collision)
 	{
 		foreach (var tag in tagsWithNoCollision)
 		{

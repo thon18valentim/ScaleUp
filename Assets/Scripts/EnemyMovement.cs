@@ -41,13 +41,21 @@ public class EnemyMovement : MonoBehaviour
 		if (target == null)
 			return;
 
+		var isHunter = enemyControl.GetEnemyBehavior() == EnemyBehavior.Hunter;
+
 		if (IsInAttackRange())
 		{
 			enemyControl.SetState(EnemyState.Attacking);
+
+			if (!isHunter)
+				return;
+
 			return;
 		}
-
-		enemyControl.SetState(EnemyState.Moving);
+		else
+		{
+			enemyControl.SetState(EnemyState.Moving);
+		}
 
 		Vector2 direction = ((Vector2)target.position - (Vector2)transform.position).normalized;
 		transform.position += (Vector3)(direction * moveSpeed * Time.deltaTime);

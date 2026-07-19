@@ -51,7 +51,10 @@ public class EnemyShot : MonoBehaviour
 					Shoot();
 
 					var targetId = enemyTargetSelector.GetTargetId();
-					enemyControl.CheckIfTargetIsAlive(targetId);
+					if (targetId != null)
+					{
+						enemyControl.CheckIfTargetIsAlive((GUID)targetId);
+					}
 
 					currentFireRateCooldown = fireRateCooldown;
 				}

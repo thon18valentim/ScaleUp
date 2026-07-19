@@ -1,6 +1,5 @@
 using Assets.Scripts;
 using UnityEngine;
-using UnityEngine.Audio;
 
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(EnemyTargetSelector))]
@@ -74,5 +73,15 @@ public class EnemyControl : MonoBehaviour
 	public void PlayShootSound()
 	{
 		audioSource.Play();
+	}
+
+	public bool CheckIfCanPorsuitPlayer()
+	{
+		return enemyBehavior == EnemyBehavior.Hunter;
+	}
+
+	public EnemyBehavior GetEnemyBehavior()
+	{
+		return enemyBehavior;
 	}
 }
