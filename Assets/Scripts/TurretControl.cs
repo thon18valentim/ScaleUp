@@ -9,6 +9,9 @@ public class TurretControl : MonoBehaviour
 	[Header("Turret Settings")]
 	[SerializeField] private int totalLife = 100;
 
+	[Header("Destruction Settings")]
+	[SerializeField] private GameObject explosionPrefab;
+
 	[Header("Status")]
 	[SerializeField] private int life;
 
@@ -44,6 +47,9 @@ public class TurretControl : MonoBehaviour
 
 	private void OnTurretDestroyed()
 	{
+		var explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+		explosion.GetComponent<ExplosionEffect>().DoEffect();
+
 		gameManager.DestroyTurret(Id);
 		Destroy(gameObject);
 	}

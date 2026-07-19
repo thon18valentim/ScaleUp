@@ -10,6 +10,9 @@ public class EnemyControl : MonoBehaviour
 	[SerializeField] private int points = 1;
 	[SerializeField] private EnemyBehavior enemyBehavior;
 
+	[Header("Destruction Settings")]
+	[SerializeField] private GameObject explosionPrefab;
+
 	[Header("Status")]
 	[SerializeField] private int life;
 
@@ -48,6 +51,9 @@ public class EnemyControl : MonoBehaviour
 	{
 		gameManager.ScorePoints(points);
 		gameManager.EnemyDestroyed();
+
+		var explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+		explosion.GetComponent<ExplosionEffect>().DoEffect();
 
 		Destroy(gameObject);
 	}

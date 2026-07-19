@@ -1,7 +1,9 @@
 using Assets.Scripts;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(CameraScaleEffect))]
 public class GameManager : MonoBehaviour
@@ -25,6 +27,13 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private GameObject mainMenuScreen;
 	[SerializeField] private GameObject gameOverScreen;
 	[SerializeField] private GameObject victoryScreen;
+	[SerializeField] private GameObject creditsModal;
+	[SerializeField] private GameObject tutorialModal;
+	[SerializeField] private TextMeshProUGUI gameVersionTxt;
+	[SerializeField] private List<GameObject> lifeBlocks;
+	[SerializeField] private List<GameObject> energyBlocks;
+	[SerializeField] private List<GameObject> scaleBlocks;
+	[SerializeField] private TextMeshProUGUI enemiesCountTxt;
 
 	private CameraScaleEffect cameraScaleEffect;
 	private PlayerScaleLevel currentScaleLevel;
@@ -37,9 +46,16 @@ public class GameManager : MonoBehaviour
 		currentScaleLevel = scaleLevels.FirstOrDefault(sl => sl.level == 1);
 	}
 
+	private void Start()
+	{
+		gameVersionTxt.text = $"v {Application.version}";
+		enemiesCountTxt.text = enemiesToDestroy.ToString();
+	}
+
 	public void ScorePoints(int points)
     {
         playerCurrentPoints += points;
+		UpdateEnergyUI(points);
 
 		if (playerCurrentPoints >= currentScaleLevel.pointsToLevelUp)
         {
@@ -60,6 +76,8 @@ public class GameManager : MonoBehaviour
 
 		playerCurrentLevel++;
 		currentScaleLevel = level;
+
+		UpdateScaleUI(playerCurrentLevel);
 	}
 
 	public TurretControl TargetAnyTurret()
@@ -95,7 +113,7 @@ public class GameManager : MonoBehaviour
 		if (turrets.Count == 0 && isPlaying)
 		{
 			// end game
-			Debug.Log("game over");
+			Debug.Log("Torretas destruidas");
 			isPlaying = false;
 			gameOverScreen.SetActive(true);
 		}
@@ -110,6 +128,8 @@ public class GameManager : MonoBehaviour
 	public void EnemyDestroyed()
 	{
 		enemiesToDestroy--;
+		enemiesCountTxt.text = enemiesToDestroy.ToString();
+
 		if (enemiesToDestroy <= 0 && isPlaying)
 		{
 			isPlaying = false;
@@ -119,11 +139,79 @@ public class GameManager : MonoBehaviour
 
 	public void LaunchGame()
 	{
+		CloseCredits();
+		CloseTutorial();
+
 		mainMenuScreen.SetActive(false);
 
 		playerControl.gameObject.SetActive(true);
 		cameraFollow.ResetPosition();
 
 		isGameStarted = true;
+	}
+
+	public void OpenCredits()
+	{
+		creditsModal.SetActive(true);
+	}
+
+	public void CloseCredits()
+	{
+		creditsModal.SetActive(false);
+	}
+
+	public void OpenTutorial()
+	{
+		tutorialModal.SetActive(true);
+	}
+
+	public void CloseTutorial()
+	{
+		tutorialModal.SetActive(false);
+	}
+
+	public void UpdateHealthUI(int health)
+	{
+		health = Mathf.Clamp(health, 0, lifeBlocks.Count);
+
+		for (int i = 0; i < lifeBlocks.Count; i++)
+		{
+			var image = lifeBlocks[i].GetComponent<Image>();
+
+			if (image == null)
+				continue;
+
+			image.color = i < health ? new Color32(20, 255, 0, 255) : new Color32(142, 142, 142, 255);
+		}
+	}
+
+	public void UpdateEnergyUI(int points)
+	{
+		points = Mathf.Clamp(points, 0, energyBlocks.Count);
+
+		for (int i = 0; i < energyBlocks.Count; i++)
+		{
+			var image = energyBlocks[i].GetComponent<Image>();
+
+			if (image == null)
+				continue;
+
+			image.color = i < points ? new Color32(0, 255, 179, 255) : new Color32(142, 142, 142, 255);
+		}
+	}
+
+	public void UpdateScaleUI(int scale)
+	{
+		scale = Mathf.Clamp(scale, 0, scaleBlocks.Count);
+
+		for (int i = 0; i < scaleBlocks.Count; i++)
+		{
+			var image = scaleBlocks[i].GetComponent<Image>();
+
+			if (image == null)
+				continue;
+
+			image.color = i < scale ? new Color32(155, 0, 255, 255) : new Color32(142, 142, 142, 255);
+		}
 	}
 }

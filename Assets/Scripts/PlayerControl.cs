@@ -13,6 +13,7 @@ public class PlayerControl : MonoBehaviour
 
 	[Header("Audio Settings")]
 	[SerializeField] private AudioSource audioSource;
+	[SerializeField] private AudioSource scaleUpSource;
 
 	private GameManager gameManager;
 	private Coroutine scaleRoutine;
@@ -26,6 +27,7 @@ public class PlayerControl : MonoBehaviour
 	private void Start()
 	{
 		gameManager = FindAnyObjectByType<GameManager>();
+		gameManager.UpdateHealthUI(currentLife);
 	}
 
 	public void OnScaleUp(float targetScale, int maxLife)
@@ -35,6 +37,8 @@ public class PlayerControl : MonoBehaviour
 
 		scaleRoutine = StartCoroutine(ScaleRoutine(targetScale));
 		currentLife = maxLife;
+
+		gameManager.UpdateHealthUI(currentLife);
 	}
 
 	private IEnumerator ScaleRoutine(float targetScale)
@@ -46,6 +50,8 @@ public class PlayerControl : MonoBehaviour
 
 		while (elapsed < animationDuration)
 		{
+			scaleUpSource.Play();
+
 			elapsed += Time.deltaTime;
 
 			float t = Mathf.Clamp01(elapsed / animationDuration);
@@ -74,7 +80,10 @@ public class PlayerControl : MonoBehaviour
 		currentLife -= damage;
 		if (currentLife <= 0)
 		{
+			Debug.Log("Jogador destruido");
 			gameManager.GameOver();
 		}
+
+		gameManager.UpdateHealthUI(currentLife);
 	}
 }

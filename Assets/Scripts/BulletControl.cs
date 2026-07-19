@@ -36,6 +36,11 @@ public class BulletControl : MonoBehaviour
 			var turretControl = collision.gameObject.GetComponent<TurretControl>();
 			turretControl.OnDamageReceived(totalDamage);
 		}
+		else if (collision.gameObject.CompareTag("Player"))
+		{
+			var playerControl = collision.gameObject.GetComponent<PlayerControl>();
+			playerControl.OnDamageReceived(totalDamage);
+		}
 
 		Destroy(gameObject);
 	}

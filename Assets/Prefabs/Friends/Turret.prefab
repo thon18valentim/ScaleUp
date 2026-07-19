@@ -302,7 +302,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TurretControl
   Id: 00000000000000000000000000000000
-  totalLife: 300
+  totalLife: 150
+  explosionPrefab: {fileID: 8918088868802384307, guid: b3c8e8252569f234f817ed9088531787, type: 3}
   life: 0
   audioSource: {fileID: 2733820775263150393}
 --- !u!95 &7540428191909292695
@@ -348,7 +349,7 @@ MonoBehaviour:
   deffenseModeRate: 5
   bulletPrefab: {fileID: 5972781184622363895, guid: 6649267579eeec74fb755b95669a9a61, type: 3}
   bulletForce: 20
-  totalDamage: 50
+  totalDamage: 3
   bulleetFireEffectPrefab: {fileID: 7870282971599480309, guid: 09c7f1dac7bb8cb449e7ae0bd944220d, type: 3}
 --- !u!82 &2733820775263150393
 AudioSource:
